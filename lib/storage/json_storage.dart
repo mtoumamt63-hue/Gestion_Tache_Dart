@@ -13,21 +13,13 @@ class JsonStorage {
       return [];
     }
 
-    final content = await file.readAsString();
+    final content = await file.readAsString(encoding: utf8);
 
     if (content.trim().isEmpty) {
       return [];
     }
 
-    final decoded = jsonDecode(content);
-
-    if (decoded is! List) {
-      throw const FormatException('Le fichier JSON doit contenir une liste.');
-    }
-
-    return decoded
-        .map((item) => Map<String, dynamic>.from(item as Map))
-        .toList();
+    return List<Map<String, dynamic>>.from(jsonDecode(content));
   }
 
   Future<void> write(List<Map<String, dynamic>> data) async {
@@ -35,8 +27,6 @@ class JsonStorage {
 
     await file.parent.create(recursive: true);
 
-    final json = const JsonEncoder.withIndent('  ').convert(data);
-
-    await file.writeAsString(json);
+    await file.writeAsString(jsonEncode(data), encoding: utf8);
   }
 }

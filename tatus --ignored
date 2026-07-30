@@ -1,0 +1,465 @@
+warning: in the working copy of 'README.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'data/tasks.json', LF will be replaced by CRLF the next time Git touches it
+[1mdiff --git a/README.md b/README.md[m
+[1mindex 3816eca..bf29da6 100644[m
+[1m--- a/README.md[m
+[1m+++ b/README.md[m
+[36m@@ -1,2 +1,284 @@[m
+[31m-A sample command-line application with an entrypoint in `bin/`, library code[m
+[31m-in `lib/`, and example unit test in `test/`.[m
+[32m+[m[32m# Gestionnaire de tâches (Projet Dart CLI)[m
+[32m+[m
+[32m+[m[32mApplication en ligne de commande développée en **Dart pur**, permettant de gérer des tâches depuis un terminal.[m
+[32m+[m
+[32m+[m[32mLe projet a été réalisé dans le but de mettre en pratique les principaux concepts du langage Dart : programmation orientée objet, héritage, classes abstraites, interfaces, génériques, exceptions, programmation asynchrone, persistance JSON et tests unitaires.[m
+[32m+[m
+[32m+[m[32m---[m
+[32m+[m
+[32m+[m[32m## Fonctionnalités[m
+[32m+[m
+[32m+[m[32mL'application permet de :[m
+[32m+[m
+[32m+[m[32m* Ajouter une tâche[m
+[32m+[m[32m* Définir un titre[m
+[32m+[m[32m* Définir une priorité : `low`, `medium` ou `high`[m
+[32m+[m[32m* Ajouter une date limite optionnelle[m
+[32m+[m[32m* Lister les tâches[m
+[32m+[m[32m* Trier les tâches par priorité[m
+[32m+[m[32m* Trier les tâches par date limite[m
+[32m+[m[32m* Marquer une tâche comme terminée[m
+[32m+[m[32m* Supprimer une tâche[m
+[32m+[m[32m* Persister les données dans un fichier JSON local[m
+[32m+[m[32m* Gérer les erreurs avec des exceptions personnalisées[m
+[32m+[m
+[32m+[m[32m---[m
+[32m+[m
+[32m+[m[32m## Technologies utilisées[m
+[32m+[m
+[32m+[m[32m* **Dart**[m
+[32m+[m[32m* `dart:io` pour les interactions avec le terminal et les fichiers[m
+[32m+[m[32m* `dart:convert` pour la sérialisation JSON[m
+[32m+[m[32m* Package `test` pour les tests unitaires[m
+[32m+[m[32m* Git / GitHub pour le versionnement et la livraison[m
+[32m+[m
+[32m+[m[32m---[m
+[32m+[m
+[32m+[m[32m## Concepts Dart mis en pratique[m
+[32m+[m
+[32m+[m[32mLe projet utilise notamment :[m
+[32m+[m
+[32m+[m[32m* Classes et objets[m
+[32m+[m[32m* Classes abstraites[m
+[32m+[m[32m* Héritage[m
+[32m+[m[32m* Redéfinition de méthodes avec `@override`[m
+[32m+[m[32m* Interfaces[m
+[32m+[m[32m* Génériques[m
+[32m+[m[32m* Exceptions personnalisées[m
+[32m+[m[32m* Programmation asynchrone avec `Future`[m
+[32m+[m[32m* Collections et opérations sur les listes[m
+[32m+[m[32m* Sérialisation / désérialisation JSON[m
+[32m+[m[32m* Tests unitaires[m
+[32m+[m
+[32m+[m[32m---[m
+[32m+[m
+[32m+[m[32m## Architecture du projet[m
+[32m+[m
+[32m+[m[32m```text[m
+[32m+[m[32mgestion_tache_dart/[m
+[32m+[m[32m│[m
+[32m+[m[32m├── bin/[m
+[32m+[m[32m│   └── main.dart[m
+[32m+[m[32m│[m
+[32m+[m[32m├── lib/[m
+[32m+[m[32m│   ├── cli/[m
+[32m+[m[32m│   │   └── task_cli.dart[m
+[32m+[m[32m│   │[m
+[32m+[m[32m│   ├── exceptions/[m
+[32m+[m[32m│   │   └── task_exception.dart[m
+[32m+[m[32m│   │[m
+[32m+[m[32m│   ├── interfaces/[m
+[32m+[m[32m│   │   └── json_serializable.dart[m
+[32m+[m[32m│   │[m
+[32m+[m[32m│   ├── models/[m
+[32m+[m[32m│   │   ├── tache.dart[m
+[32m+[m[32m│   │   └── tache_urgente.dart[m
+[32m+[m[32m│   │[m
+[32m+[m[32m│   ├── repositories/[m
+[32m+[m[32m│   │   ├── repository.dart[m
+[32m+[m[32m│   │   └── tache_repository.dart[m
+[32m+[m[32m│   │[m
+[32m+[m[32m│   ├── services/[m
+[32m+[m[32m│   │   └── task_service.dart[m
+[32m+[m[32m│   │[m
+[32m+[m[32m│   ├── storage/[m
+[32m+[m[32m│   │   └── json_storage.dart[m
+[32m+[m[32m│   │[m
+[32m+[m[32m│   └── utils/[m
+[32m+[m[32m│       └── priority.dart[m
+[32m+[m[32m│[m
+[32m+[m[32m├── data/[m
+[32m+[m[32m│   └── tasks.json[m
+[32m+[m[32m│[m
+[32m+[m[32m├── test/[m
+[32m+[m[32m│   └── ...[m
+[32m+[m[32m│[m
+[32m+[m[32m├── .gitignore[m
+[32m+[m[32m├── analysis_options.yaml[m
+[32m+[m[32m├── CHANGELOG.md[m
+[32m+[m[32m├── pubspec.yaml[m
+[32m+[m[32m└── README.md[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32m---[m
+[32m+[m
+[32m+[m[32m## Prérequis[m
+[32m+[m
+[32m+[m[32mPour exécuter le projet, il faut disposer du SDK Dart.[m
+[32m+[m
+[32m+[m[32mVérifier l'installation :[m
+[32m+[m
+[32m+[m[32m```bash[m
+[32m+[m[32mdart --version[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32m---[m
+[32m+[m
+[32m+[m[32m## Installation[m
+[32m+[m
+[32m+[m[32mCloner le dépôt :[m
+[32m+[m
+[32m+[m[32m```bash[m
+[32m+[m[32mgit clone https://github.com/mtoumamt63-hue/Gestion_Tache_Dart.git[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32mSe placer dans le projet :[m
+[32m+[m
+[32m+[m[32m```bash[m
+[32m+[m[32mcd Gestion_Tache_Dart[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32mInstaller les dépendances :[m
+[32m+[m
+[32m+[m[32m```bash[m
+[32m+[m[32mdart pub get[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32m---[m
+[32m+[m
+[32m+[m[32m## Lancer l'application[m
+[32m+[m
+[32m+[m[32mExécuter :[m
+[32m+[m
+[32m+[m[32m```bash[m
+[32m+[m[32mdart run bin/main.dart[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32mL'application affiche ensuite un menu permettant de gérer les tâches :[m
+[32m+[m
+[32m+[m[32m```text[m
+[32m+[m[32m====================================[m
+[32m+[m[32m       GESTIONNAIRE DE TÂCHES[m
+[32m+[m[32m====================================[m
+[32m+[m[32m1. Ajouter une tâche[m
+[32m+[m[32m2. Lister les tâches[m
+[32m+[m[32m3. Terminer une tâche[m
+[32m+[m[32m4. Supprimer une tâche[m
+[32m+[m[32m5. Quitter[m
+[32m+[m[32m====================================[m
+[32m+[m[32mVotre choix :[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32m---[m
+[32m+[m
+[32m+[m[32m## Exécuter les tests[m
+[32m+[m
+[32m+[m[32mLancer l'ensemble des tests :[m
+[32m+[m
+[32m+[m[32m```bash[m
+[32m+[m[32mdart test[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32mLe projet contient plusieurs tests couvrant notamment :[m
+[32m+[m
+[32m+[m[32m* l'ajout d'une tâche ;[m
+[32m+[m[32m* la validation des données ;[m
+[32m+[m[32m* l'héritage ;[m
+[32m+[m[32m* la complétion ;[m
+[32m+[m[32m* la suppression ;[m
+[32m+[m[32m* le tri par priorité ;[m
+[32m+[m[32m* le tri par date.[m
+[32m+[m
+[32m+[m[32m---[m
+[32m+[m
+[32m+[m[32m## Analyser le code[m
+[32m+[m
+[32m+[m[32mPour vérifier la qualité et détecter les problèmes statiques :[m
+[32m+[m
+[32m+[m[32m```bash[m
+[32m+[m[32mdart analyze[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32mLe projet doit retourner :[m
+[32m+[m
+[32m+[m[32m```text[m
+[32m+[m[32mNo issues found![m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32m---[m
+[32m+[m
+[32m+[m[32m## Persistance des données[m
+[32m+[m
+[32m+[m[32mLes tâches sont sauvegardées localement dans :[m
+[32m+[m
+[32m+[m[32m```text[m
+[32m+[m[32mdata/tasks.json[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32mLe stockage utilise le format JSON.[m
+[32m+[m
+[32m+[m[32mExemple :[m
+[32m+[m
+[32m+[m[32m```json[m
+[32m+[m[32m[[m
+[32m+[m[32m  {[m
+[32m+[m[32m    "id": "1",[m
+[32m+[m[32m    "title": "Apprendre Dart",[m
+[32m+[m[32m    "priority": "high",[m
+[32m+[m[32m    "completed": false,[m
+[32m+[m[32m    "dueDate": "2026-08-10"[m
+[32m+[m[32m  }[m
+[32m+[m[32m][m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32mLes données restent disponibles après la fermeture puis le redémarrage de l'application.[m
+[32m+[m
+[32m+[m[32m---[m
+[32m+[m
+[32m+[m[32m## Architecture logicielle[m
+[32m+[m
+[32m+[m[32mLe projet suit une séparation des responsabilités :[m
+[32m+[m
+[32m+[m[32m### Models[m
+[32m+[m
+[32m+[m[32mLes modèles représentent les données métier.[m
+[32m+[m
+[32m+[m[32m```text[m
+[32m+[m[32mTask[m
+[32m+[m[32mUrgentTask[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32m### Repository[m
+[32m+[m
+[32m+[m[32mLe repository fournit une abstraction pour manipuler les données.[m
+[32m+[m
+[32m+[m[32m```text[m
+[32m+[m[32mRepository<T>[m
+[32m+[m[32mTaskRepository[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32mL'utilisation de `T` permet d'avoir un repository générique.[m
+[32m+[m
+[32m+[m[32m### Service[m
+[32m+[m
+[32m+[m[32m`TaskService` contient la logique métier de l'application.[m
+[32m+[m
+[32m+[m[32m### Storage[m
+[32m+[m
+[32m+[m[32m`JsonStorage` s'occupe de la lecture et de l'écriture des données dans le fichier JSON.[m
+[32m+[m
+[32m+[m[32m### CLI[m
+[32m+[m
+[32m+[m[32m`TaskCli` gère les interactions avec l'utilisateur depuis le terminal.[m
+[32m+[m
+[32m+[m[32m### Exceptions[m
+[32m+[m
+[32m+[m[32mLes erreurs métier sont représentées par des exceptions personnalisées.[m
+[32m+[m
+[32m+[m[32m---[m
+[32m+[m
+[32m+[m[32m## Validation du projet[m
+[32m+[m
+[32m+[m[32mAvant livraison, les commandes suivantes doivent fonctionner :[m
+[32m+[m
+[32m+[m[32m```bash[m
+[32m+[m[32mdart analyze[m
+[32m+[m[32mdart test[m
+[32m+[m[32mdart run bin/main.dart[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32m---[m
+[32m+[m
+[32m+[m[32m## Auteur[m
+[32m+[m
+[32m+[m[32mZénas Alpha TOUMAINI (L'ambasssadeur)[m
+[1mdiff --git a/data/tasks.json b/data/tasks.json[m
+[1mindex 242d84f..b8052aa 100644[m
+[1m--- a/data/tasks.json[m
+[1m+++ b/data/tasks.json[m
+[36m@@ -1,10 +1,10 @@[m
+ [[m
+   {[m
+[31m-    "id": "1",[m
+[31m-    "title": "Terminer le projet Dart",[m
+[32m+[m[32m    "id": "1785443325533561",[m
+[32m+[m[32m    "title": "Apprendre Ã  coder en Flutter",[m
+     "priority": "high",[m
+[31m-    "dueDate": null,[m
+[32m+[m[32m    "dueDate": "2026-03-11T00:00:00.000",[m
+     "completed": false,[m
+[31m-    "type": "urgent"[m
+[32m+[m[32m    "type": "normal"[m
+   }[m
+ ][m
+\ No newline at end of file[m
+[1mdiff --git a/lib/services/task_service.dart b/lib/services/task_service.dart[m
+[1mindex 8b13789..429826b 100644[m
+[1m--- a/lib/services/task_service.dart[m
+[1m+++ b/lib/services/task_service.dart[m
+[36m@@ -1 +1,109 @@[m
+[32m+[m[32mimport '../exceptions/task_exception.dart';[m
+[32m+[m[32mimport '../models/tache.dart';[m
+[32m+[m[32mimport '../models/tache_normale.dart';[m
+[32m+[m[32mimport '../models/tache_urgente.dart';[m
+[32m+[m[32mimport '../repositories/repository.dart';[m
+[32m+[m[32mimport '../utils/priority.dart';[m
+ [m
+[32m+[m[32mclass TaskService {[m
+[32m+[m[32m  final Repository<Task> repository;[m
+[32m+[m
+[32m+[m[32m  TaskService(this.repository);[m
+[32m+[m
+[32m+[m[32m  Future<Task> addTask({[m
+[32m+[m[32m    required String title,[m
+[32m+[m[32m    required Priority priority,[m
+[32m+[m[32m    DateTime? dueDate,[m
+[32m+[m[32m    bool urgent = false,[m
+[32m+[m[32m  }) async {[m
+[32m+[m[32m    if (title.trim().isEmpty) {[m
+[32m+[m[32m      throw TaskException('Le titre de la tâche ne peut pas être vide.');[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    final id = DateTime.now().microsecondsSinceEpoch.toString();[m
+[32m+[m
+[32m+[m[32m    late final Task task;[m
+[32m+[m
+[32m+[m[32m    if (urgent) {[m
+[32m+[m[32m      task = UrgentTask(id: id, title: title.trim(), dueDate: dueDate);[m
+[32m+[m[32m    } else {[m
+[32m+[m[32m      task = NormalTask([m
+[32m+[m[32m        id: id,[m
+[32m+[m[32m        title: title.trim(),[m
+[32m+[m[32m        priority: priority,[m
+[32m+[m[32m        dueDate: dueDate,[m
+[32m+[m[32m      );[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    await repository.add(task);[m
+[32m+[m
+[32m+[m[32m    return task;[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  Future<List<Task>> getTasks() async {[m
+[32m+[m[32m    return await repository.getAll();[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  Future<List<Task>> getTasksSortedByPriority() async {[m
+[32m+[m[32m    final tasks = List<Task>.from(await repository.getAll());[m
+[32m+[m
+[32m+[m[32m    tasks.sort((a, b) => b.priority.index.compareTo(a.priority.index));[m
+[32m+[m
+[32m+[m[32m    return tasks;[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  Future<List<Task>> getTasksSortedByDueDate() async {[m
+[32m+[m[32m    final tasks = List<Task>.from(await repository.getAll());[m
+[32m+[m
+[32m+[m[32m    tasks.sort((a, b) {[m
+[32m+[m[32m      if (a.dueDate == null && b.dueDate == null) {[m
+[32m+[m[32m        return 0;[m
+[32m+[m[32m      }[m
+[32m+[m
+[32m+[m[32m      if (a.dueDate == null) {[m
+[32m+[m[32m        return 1;[m
+[32m+[m[32m      }[m
+[32m+[m
+[32m+[m[32m      if (b.dueDate == null) {[m
+[32m+[m[32m        return -1;[m
+[32m+[m[32m      }[m
+[32m+[m
+[32m+[m[32m      return a.dueDate!.compareTo(b.dueDate!);[m
+[32m+[m[32m    });[m
+[32m+[m
+[32m+[m[32m    return tasks;[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  Future<void> completeTask(String id) async {[m
+[32m+[m[32m    final tasks = await repository.getAll();[m
+[32m+[m
+[32m+[m[32m    Task? foundTask;[m
+[32m+[m
+[32m+[m[32m    for (final task in tasks) {[m
+[32m+[m[32m      if (task.id == id) {[m
+[32m+[m[32m        foundTask = task;[m
+[32m+[m[32m        break;[m
+[32m+[m[32m      }[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    if (foundTask == null) {[m
+[32m+[m[32m      throw TaskException('Tâche introuvable.');[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    foundTask.complete();[m
+[32m+[m
+[32m+[m[32m    await repository.update(foundTask);[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  Future<void> deleteTask(String id) async {[m
+[32m+[m[32m    final tasks = await repository.getAll();[m
+[32m+[m
+[32m+[m[32m    final exists = tasks.any((task) => task.id == id);[m
+[32m+[m
+[32m+[m[32m    if (!exists) {[m
+[32m+[m[32m      throw TaskException('Tâche introuvable.');[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    await repository.delete(id);[m
+[32m+[m[32m  }[m
+[32m+[m[32m}[m
+[1mdiff --git a/lib/storage/json_storage.dart b/lib/storage/json_storage.dart[m
+[1mindex a391111..7a763ae 100644[m
+[1m--- a/lib/storage/json_storage.dart[m
+[1m+++ b/lib/storage/json_storage.dart[m
+[36m@@ -13,21 +13,13 @@[m [mclass JsonStorage {[m
+       return [];[m
+     }[m
+ [m
+[31m-    final content = await file.readAsString();[m
+[32m+[m[32m    final content = await file.readAsString(encoding: utf8);[m
+ [m
+     if (content.trim().isEmpty) {[m
+       return [];[m
+     }[m
+ [m
+[31m-    final decoded = jsonDecode(content);[m
+[31m-[m
+[31m-    if (decoded is! List) {[m
+[31m-      throw const FormatException('Le fichier JSON doit contenir une liste.');[m
+[31m-    }[m
+[31m-[m
+[31m-    return decoded[m
+[31m-        .map((item) => Map<String, dynamic>.from(item as Map))[m
+[31m-        .toList();[m
+[32m+[m[32m    return List<Map<String, dynamic>>.from(jsonDecode(content));[m
+   }[m
+ [m
+   Future<void> write(List<Map<String, dynamic>> data) async {[m
+[36m@@ -35,8 +27,6 @@[m [mclass JsonStorage {[m
+ [m
+     await file.parent.create(recursive: true);[m
+ [m
+[31m-    final json = const JsonEncoder.withIndent('  ').convert(data);[m
+[31m-[m
+[31m-    await file.writeAsString(json);[m
+[32m+[m[32m    await file.writeAsString(jsonEncode(data), encoding: utf8);[m
+   }[m
+ }[m
