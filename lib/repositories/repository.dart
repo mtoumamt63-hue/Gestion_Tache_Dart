@@ -3,7 +3,7 @@ abstract class Repository<T> {
 
   Future<List<T>> getAll();
 
-  Future<void> delete(String id);
-
   Future<void> update(T item);
+
+  Future<void> delete(String id);
 }

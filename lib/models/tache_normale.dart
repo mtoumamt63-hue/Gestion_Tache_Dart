@@ -1,13 +1,13 @@
 import 'tache.dart';
-import '../utils/priority.dart';
 
-class UrgentTask extends Task {
-  UrgentTask({
+class NormalTask extends Task {
+  NormalTask({
     required super.id,
     required super.title,
+    required super.priority,
     super.dueDate,
     super.completed,
-  }) : super(priority: Priority.high);
+  });
 
   @override
   Map<String, dynamic> toJson() {
@@ -17,7 +17,7 @@ class UrgentTask extends Task {
       'priority': priority.name,
       'dueDate': dueDate?.toIso8601String(),
       'completed': completed,
-      'type': 'urgent',
+      'type': 'normal',
     };
   }
 

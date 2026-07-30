@@ -23,10 +23,4 @@ abstract class Task implements JsonSerializable {
   void complete() {
     completed = true;
   }
-
-  @override
-  Map<String, dynamic> toJson();
-
-  @override
-  void fromJson(Map<String, dynamic> json);
 }
